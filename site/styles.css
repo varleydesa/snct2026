@@ -44,14 +44,20 @@ h3 { font-size: 1rem; color: var(--sub); margin: 12px 0 0; }
 .sub { color: var(--sub); margin: 0; }
 
 label { font-size: .9rem; color: var(--sub); }
+.rotulo-campo { font-size: 1.05rem; font-weight: 700; color: var(--texto); }
 
 input {
-  font-size: 1.1rem;
-  padding: 12px 14px;
+  font-size: 1.2rem;
+  padding: 14px 16px;
   border-radius: 10px;
-  border: 1px solid var(--borda);
-  background: var(--painel);
+  border: 2px solid var(--destaque);
+  background: #22365a;
   color: var(--texto);
+}
+input::placeholder { color: #8fa0bb; }
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(245, 184, 61, .35);
 }
 
 .btn {
