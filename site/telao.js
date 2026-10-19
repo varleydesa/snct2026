@@ -4,7 +4,8 @@
 
   // Link do jogo, a partir do endereço desta página
   // Endereço da pasta do site, sem o nome do arquivo (ex.: https://seu-site.netlify.app/)
-  const url = location.href.replace(/telao\.html(\?.*)?(#.*)?$/, "");
+  const semParametros = location.href.split(/[?#]/)[0];
+  const url = semParametros.substring(0, semParametros.lastIndexOf("/") + 1);
   $("link").textContent = url;
   new QRCode($("qr"), { text: url, width: 260, height: 260 });
 
