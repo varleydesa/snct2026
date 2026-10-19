@@ -139,6 +139,14 @@
     Q.fichas.forEach((f) => {
       const card = document.createElement("article");
       card.className = "ficha";
+      if (f.foto) {
+        const img = document.createElement("img");
+        img.src = f.foto;
+        img.alt = f.nome;
+        img.loading = "lazy";
+        if (f.posicao) img.style.objectPosition = f.posicao;
+        card.appendChild(img);
+      }
       const h = document.createElement("h4");
       h.textContent = f.nome;
       const a = document.createElement("p");
@@ -147,6 +155,12 @@
       const t = document.createElement("p");
       t.textContent = f.texto;
       card.append(h, a, t);
+      if (f.credito) {
+        const c = document.createElement("p");
+        c.className = "credito";
+        c.textContent = f.credito;
+        card.appendChild(c);
+      }
       cont.appendChild(card);
     });
   }

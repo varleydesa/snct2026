@@ -42,20 +42,30 @@ window.QUIZ = {
   ],
 
   // Fichas mostradas na tela final
+  // foto: arquivo em img/. posicao: enquadramento da foto (ex.: "15% center")
   fichas: [
     {
       nome: "Dorothy Vaughan",
       anos: "1910 – 2008",
+      foto: "img/dorothy-vaughan.jpg",
+      posicao: "center",
+      credito: "Foto: NASA",
       texto: "Matemática e programadora. Em 1949, tornou-se a primeira supervisora negra do NACA. Depois, especializou-se em FORTRAN."
     },
     {
       nome: "Katherine Johnson",
       anos: "1918 – 2020",
+      foto: "img/katherine-johnson.jpg",
+      posicao: "center",
+      credito: "Foto: NASA",
       texto: "Calculou trajetórias de voos como o Freedom 7 (1961) e o Friendship 7 (1962). Recebeu a Medalha Presidencial da Liberdade em 2015."
     },
     {
       nome: "Mary W. Jackson",
       anos: "1921 – 2005",
+      foto: "img/mary-jackson.webp",
+      posicao: "center",
+      credito: "Foto: NASA",
       texto: "Em 1958, tornou-se a primeira engenheira negra da NASA. Estudou o fluxo de ar ao redor de aeronaves."
     }
   ]
