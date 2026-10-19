@@ -79,13 +79,16 @@
         pos++;
         const d = doc.data();
         const li = document.createElement("li");
+        const ps = document.createElement("span");
+        ps.className = "posicao";
+        ps.textContent = `${pos}º`;
         const n = document.createElement("span");
         n.className = "nome";
         n.textContent = d.apelido; // textContent evita injeção de HTML
         const p = document.createElement("span");
         p.className = "pts";
         p.textContent = `${d.pontos} pts`;
-        li.append(n, p);
+        li.append(ps, n, p);
         if (pos <= 3) li.classList.add("pod" + pos);
         if (doc.id === destacado) li.classList.add("novo");
         lista.appendChild(li);

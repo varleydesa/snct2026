@@ -167,6 +167,19 @@
     });
   }
 
+  // Posição: quantas pessoas têm mais pontos, mais 1 (empates dividem a posição)
+  function mostrarPosicao() {
+    if (!db) return;
+    db.collection("ranking")
+      .where("pontos", ">", pontos)
+      .count()
+      .get()
+      .then((r) => {
+        $("posicao-final").textContent = `Você ficou em ${r.data().count + 1}º lugar`;
+      })
+      .catch(() => {});
+  }
+
   function enviarRanking() {
     if (enviado) return;
     enviado = true;
@@ -182,7 +195,10 @@
         acertos: acertos,
         criadoEm: firebase.firestore.FieldValue.serverTimestamp()
       })
-      .then(() => ($("status-envio").textContent = "Pontuação enviada ao ranking!"))
+      .then(() => {
+        $("status-envio").textContent = "Pontuação enviada ao ranking!";
+        mostrarPosicao();
+      })
       .catch(() => ($("status-envio").textContent = "Não foi possível enviar. Avise a equipe."));
   }
 })();
