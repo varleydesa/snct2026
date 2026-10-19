@@ -202,3 +202,28 @@ input:focus {
   display: block;
 }
 .ficha .credito { font-size: .75rem; margin-top: 8px; opacity: .8; }
+
+/* Último a jogar (telão) */
+.ultimo {
+  background: var(--painel);
+  border: 2px solid var(--destaque);
+  border-radius: 14px;
+  padding: 18px 22px;
+}
+.ultimo-linha { font-size: 2rem; font-weight: 800; margin: 6px 0 0; }
+.ultimo-linha #ultimo-pts { color: var(--destaque); margin-left: 12px; }
+.ultimo-pos { font-size: 1.4rem; color: var(--sub); margin: 4px 0 12px; }
+.acertos { display: flex; gap: 10px; }
+.marca {
+  width: 52px; height: 52px;
+  border-radius: 12px;
+  display: grid; place-items: center;
+  font-size: 1.8rem; font-weight: 800; color: #fff;
+}
+.marca.certa { background: var(--certa); }
+.marca.errada { background: var(--errada); }
+.lista li.novo { animation: piscar 1s ease-in-out 0s 6; border-color: var(--destaque); }
+@keyframes piscar {
+  0%, 100% { background: var(--painel); }
+  50% { background: #3a5278; }
+}

@@ -1,4 +1,4 @@
-// Tela do telão: QR code e ranking ao vivo.
+// Tela do telão: QR code, último a jogar e ranking ao vivo.
 (() => {
   const $ = (id) => document.getElementById(id);
 
@@ -15,38 +15,83 @@
 
   firebase.initializeApp(window.FIREBASE_CONFIG);
   const db = firebase.firestore();
+  const col = db.collection("ranking");
 
-  db.collection("ranking")
-    .orderBy("pontos", "desc")
-    .limit(10)
-    .onSnapshot(
-      (snap) => {
-        const lista = $("lista");
-        lista.innerHTML = "";
-        if (snap.empty) {
-          const li = document.createElement("li");
-          li.className = "vazio";
-          li.textContent = "Ninguém jogou ainda. Escaneie o QR code!";
-          lista.appendChild(li);
-          return;
-        }
-        let pos = 0;
-        snap.forEach((doc) => {
-          pos++;
-          const d = doc.data();
-          const li = document.createElement("li");
-          const n = document.createElement("span");
-          n.className = "nome";
-          n.textContent = d.apelido; // textContent evita injeção de HTML
-          const p = document.createElement("span");
-          p.className = "pts";
-          p.textContent = `${d.pontos} pts`;
-          li.append(n, p);
-          if (pos <= 3) li.classList.add("pod" + pos);
-          lista.appendChild(li);
-        });
-        $("status-telao").textContent = "";
-      },
-      () => ($("status-telao").textContent = "Erro ao carregar o ranking.")
-    );
+  let ultimoId = null;   // id do último a jogar exibido
+  let destacado = null;  // id que deve piscar no ranking
+
+  // ----- Último a jogar -----
+  col.orderBy("criadoEm", "desc").limit(1).onSnapshot((snap) => {
+    if (snap.empty) return;
+    const doc = snap.docs[0];
+    const d = doc.data();
+    if (!d.criadoEm) return; // ainda sendo gravado pelo servidor
+    if (doc.id === ultimoId) return;
+    ultimoId = doc.id;
+    mostrarUltimo(d);
+    destacar(doc.id);
+  });
+
+  function mostrarUltimo(d) {
+    $("ultimo-nome").textContent = d.apelido;
+    $("ultimo-pts").textContent = `${d.pontos} pts`;
+
+    const cont = $("ultimo-acertos");
+    cont.innerHTML = "";
+    (d.acertos || []).forEach((ok) => {
+      const m = document.createElement("span");
+      m.className = ok ? "marca certa" : "marca errada";
+      m.textContent = ok ? "✓" : "✗";
+      cont.appendChild(m);
+    });
+
+    // Posição: quantas pessoas têm mais pontos, mais 1 (empates dividem a posição)
+    $("ultimo-pos").textContent = "Calculando posição...";
+    col.where("pontos", ">", d.pontos).count().get()
+      .then((r) => ($("ultimo-pos").textContent = `${r.data().count + 1}º lugar`))
+      .catch(() => ($("ultimo-pos").textContent = ""));
+
+    $("ultimo").classList.remove("oculto");
+  }
+
+  function destacar(id) {
+    destacado = id;
+    setTimeout(() => {
+      destacado = null;
+      document.querySelectorAll(".lista li.novo").forEach((li) => li.classList.remove("novo"));
+    }, 6000);
+  }
+
+  // ----- Ranking (top 10) -----
+  col.orderBy("pontos", "desc").limit(10).onSnapshot(
+    (snap) => {
+      const lista = $("lista");
+      lista.innerHTML = "";
+      if (snap.empty) {
+        const li = document.createElement("li");
+        li.className = "vazio";
+        li.textContent = "Ninguém jogou ainda. Escaneie o QR code!";
+        lista.appendChild(li);
+        return;
+      }
+      let pos = 0;
+      snap.forEach((doc) => {
+        pos++;
+        const d = doc.data();
+        const li = document.createElement("li");
+        const n = document.createElement("span");
+        n.className = "nome";
+        n.textContent = d.apelido; // textContent evita injeção de HTML
+        const p = document.createElement("span");
+        p.className = "pts";
+        p.textContent = `${d.pontos} pts`;
+        li.append(n, p);
+        if (pos <= 3) li.classList.add("pod" + pos);
+        if (doc.id === destacado) li.classList.add("novo");
+        lista.appendChild(li);
+      });
+      $("status-telao").textContent = "";
+    },
+    () => ($("status-telao").textContent = "Erro ao carregar o ranking.")
+  );
 })();

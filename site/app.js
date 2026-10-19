@@ -11,6 +11,7 @@
   let timer = null;
   let respondida = false;
   let enviado = false;
+  let acertos = [];
 
   // Firebase é opcional: sem configuração, o jogo roda e só não envia ao ranking
   const configurado = window.FIREBASE_CONFIG && window.FIREBASE_CONFIG.projectId !== "COLE_AQUI";
@@ -29,7 +30,7 @@
       return;
     }
     $("erro-inicio").textContent = "";
-    idx = 0; pontos = 0; streak = 0; enviado = false;
+    idx = 0; pontos = 0; streak = 0; enviado = false; acertos = [];
     mostrar("tela-quiz");
     perguntar();
   });
@@ -87,6 +88,7 @@
     botoes[p.correta].classList.add("certa");
 
     let ganho = 0;
+    acertos.push(escolha === p.correta);
     if (escolha === p.correta) {
       botoes[escolha].classList.add("certa");
       streak++;
@@ -177,6 +179,7 @@
       .add({
         apelido: apelido,
         pontos: pontos,
+        acertos: acertos,
         criadoEm: firebase.firestore.FieldValue.serverTimestamp()
       })
       .then(() => ($("status-envio").textContent = "Pontuação enviada ao ranking!"))
