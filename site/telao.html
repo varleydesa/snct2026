@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ranking SNCT</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="telao-corpo">
+  <main class="telao">
+    <section class="telao-esq">
+      <p class="rotulo">Quiz SNCT</p>
+      <h1>Quem eram as calculadoras da NASA?</h1>
+      <div id="qr" class="qr"></div>
+      <p class="sub">Escaneie o QR code para jogar</p>
+      <p id="link" class="link"></p>
+      <p id="status-telao" class="status"></p>
+    </section>
+    <section class="telao-dir">
+      <h2>Ranking</h2>
+      <ol id="lista" class="lista"></ol>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="config.js"></script>
+  <script src="telao.js"></script>
+</body>
+</html>
