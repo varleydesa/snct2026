@@ -3,7 +3,8 @@
   const $ = (id) => document.getElementById(id);
 
   // Link do jogo, a partir do endereço desta página
-  const url = new URL("index.html", location.href).href;
+  // Endereço da pasta do site, sem o nome do arquivo (ex.: https://seu-site.netlify.app/)
+  const url = location.href.replace(/telao\.html(\?.*)?(#.*)?$/, "");
   $("link").textContent = url;
   new QRCode($("qr"), { text: url, width: 260, height: 260 });
 
